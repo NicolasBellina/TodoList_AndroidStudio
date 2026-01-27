@@ -16,6 +16,7 @@ cd "/Users/nicolasbellina/Documents/ESGI M1/android studio/JetpackCompose_Playgr
 - AndroidX Lifecycle pour le ViewModel
 - Material Design 3
 ## Lancer l'application
+- Se mettre dans l'application TodoApp
 ```bash
 bash run-app.sh
 ```
