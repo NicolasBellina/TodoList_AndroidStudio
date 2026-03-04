@@ -10,23 +10,32 @@ Une application Android moderne de gestion de tâches développée avec **Jetpac
 - ❌ **Supprimer** une tâche par ID
 - 📅 **Timestamps** automatiques pour chaque tâche
 
-## 🏗️ Architecture
+## 🏗️ Architecture - Structure du Projet
 
-L'application suit une architecture **MVVM** (Model-View-ViewModel) :
+L'application suit une architecture **MVVM** (Model-View-ViewModel) bien organisée :
 
-| Fichier | Description |
-|---------|-------------|
-| **Todo.kt** | Modèle de données - classe data pour une tâche |
-| **TodoManager.kt** | Gestion des données - singleton pour les opérations CRUD |
-| **TodoViewModel.kt** | ViewModel - logique métier et gestion d'état |
-| **TodoListPage.kt** | Interface utilisateur Compose |
-| **MainActivity.kt** | Point d'entrée de l'application |
+```
+app/src/main/java/np/com/bimalkafle/todoapp/
+├── MainActivity.kt                          # Point d'entrée de l'application
+├── data/
+│   ├── model/
+│   │   └── Todo.kt                          # Modèle de données (data class)
+│   └── manager/
+│       └── TodoManager.kt                   # Gestion CRUD (singleton)
+└── ui/
+    ├── screens/
+    │   └── TodoListPage.kt                  # Interface utilisateur Compose
+    ├── viewmodel/
+    │   └── TodoViewModel.kt                 # Logique métier & gestion d'état
+    └── theme/
+        ├── Color.kt, Theme.kt, Type.kt      # Thème Material Design 3
+```
 
 ## 🛠️ Technologies utilisées
 
-- **Kotlin** - Langage de programmation
+- **Kotlin** - Langage de programmation principal
 - **Jetpack Compose** - Framework UI déclaratif
-- **AndroidX Lifecycle** - ViewModel et LiveData
+- **AndroidX Lifecycle** - ViewModel et LiveData pour la gestion d'état
 - **Material Design 3** - Design System
 - **Gradle** - Gestion des dépendances et build
 
@@ -84,7 +93,9 @@ adb logcat | grep TodoApp
 - Java 11+
 - Gradle 8.0+
 
-## 💻 Utilisation de TodoManager
+## 💻 Utilisation programmatique
+
+### TodoManager - CRUD operations
 
 ```kotlin
 // Récupérer toutes les tâches
@@ -100,12 +111,52 @@ TodoManager.updateTodo(id = 1, newTitle = "Tâche modifiée")
 TodoManager.deleteTodo(id = 1)
 ```
 
+### TodoViewModel - Avec LiveData
+
+```kotlin
+val viewModel: TodoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
+
+// Observer les changements
+viewModel.todoList.observe(this) { todos ->
+    // Mettre à jour l'UI
+}
+
+// Actions utilisateur
+viewModel.addTodo("Nouvelle tâche")
+viewModel.updateTodo(1, "Titre modifié")
+viewModel.deleteTodo(1)
+```
+
 ## 📝 Modèle de données
 
 ```kotlin
 data class Todo(
-    val id: Int,
-    var title: String,
-    val createdAt: Date
+    var id: Int,              // ID unique (généré automatiquement)
+    var title: String,        // Titre de la tâche
+    var createdAt: Date       // Date de création
 )
 ```
+
+## ✨ Fonctionnalités détaillées
+
+### Ajouter une tâche
+- Saisir le titre dans le champ texte
+- Cliquer sur le bouton "Add"
+- La tâche est ajoutée en haut de la liste avec un timestamp
+
+### Modifier une tâche
+- Cliquer sur l'icône ✏️ (crayon) d'une tâche
+- Une dialog s'affiche avec le titre actuel
+- Modifier le texte et cliquer "Sauvegarder"
+
+### Supprimer une tâche
+- Cliquer sur l'icône 🗑️ (corbeille) d'une tâche
+- La tâche est supprimée immédiatement
+
+## 👤 Auteur
+
+Nicolas Bellina - ESGI M1
+
+## 📅 Dernière mise à jour
+
+4 mars 2026

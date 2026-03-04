@@ -1,4 +1,4 @@
-package np.com.bimalkafle.todoapp
+package np.com.bimalkafle.todoapp.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,24 +31,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import np.com.bimalkafle.todoapp.R
+import np.com.bimalkafle.todoapp.data.model.Todo
+import np.com.bimalkafle.todoapp.ui.viewmodel.TodoViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 @Composable
-fun TodoListPage(viewModel: TodoViewModel){
+fun TodoListPage(viewModel: TodoViewModel) {
 
     val todoList by viewModel.todoList.observeAsState()
     var inputText by remember {
         mutableStateOf("")
     }
-    
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(8.dp)
     ) {
-        
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -56,11 +59,12 @@ fun TodoListPage(viewModel: TodoViewModel){
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             OutlinedTextField(
-                modifier= Modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 value = inputText,
                 onValueChange = {
-                inputText = it
-            })
+                    inputText = it
+                }
+            )
             Button(onClick = {
                 if (inputText.isNotBlank()) {
                     viewModel.addTodo(inputText)
@@ -74,7 +78,7 @@ fun TodoListPage(viewModel: TodoViewModel){
         todoList?.let {
             LazyColumn(
                 content = {
-                    itemsIndexed(it){index: Int, item: Todo ->
+                    itemsIndexed(it) { index: Int, item: Todo ->
                         TodoItem(
                             item = item,
                             onDelete = {
@@ -87,7 +91,7 @@ fun TodoListPage(viewModel: TodoViewModel){
                     }
                 }
             )
-        }?: Text(
+        } ?: Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             text = "No items yet",
@@ -100,7 +104,7 @@ fun TodoListPage(viewModel: TodoViewModel){
 }
 
 @Composable
-fun TodoItem(item : Todo,onDelete : ()-> Unit, onEdit: (String) -> Unit) {
+fun TodoItem(item: Todo, onDelete: () -> Unit, onEdit: (String) -> Unit) {
     var showEditDialog by remember { mutableStateOf(false) }
     var editText by remember { mutableStateOf(item.title) }
 
@@ -180,19 +184,3 @@ fun TodoItem(item : Todo,onDelete : ()-> Unit, onEdit: (String) -> Unit) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
