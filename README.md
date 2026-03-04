@@ -140,18 +140,23 @@ data class Todo(
 ## ✨ Fonctionnalités détaillées
 
 ### Ajouter une tâche
-- Saisir le titre dans le champ texte
-- Cliquer sur le bouton "Add"
-- La tâche est ajoutée en haut de la liste avec un timestamp
+1. Saisir le titre dans le champ texte en haut
+2. Cliquer sur le bouton **"Add"**
+3. La tâche est ajoutée en haut de la liste avec un timestamp automatique
+4. Le champ texte se vide automatiquement
 
-### Modifier une tâche
-- Cliquer sur l'icône ✏️ (crayon) d'une tâche
-- Une dialog s'affiche avec le titre actuel
-- Modifier le texte et cliquer "Sauvegarder"
+### Modifier une tâche ✅ (Corrigé)
+1. Cliquer sur l'icône **✏️ (crayon)** sur le côté droit de la tâche
+2. Une boîte de dialogue s'affiche avec le titre actuel
+3. Modifier le texte dans le champ
+4. Cliquer **"Sauvegarder"** pour confirmer
+   - **Important** : C'est maintenant le bon todo qui sera modifié (bug corrigé)
+5. Cliquer **"Annuler"** pour ignorer les modifications
 
 ### Supprimer une tâche
-- Cliquer sur l'icône 🗑️ (corbeille) d'une tâche
-- La tâche est supprimée immédiatement
+1. Cliquer sur l'icône **🗑️ (corbeille)** sur le côté droit de la tâche
+2. La tâche est supprimée immédiatement de la liste
+3. Pas de confirmation requise
 
 ## 👤 Auteur
 
@@ -160,3 +165,12 @@ Nicolas Bellina - ESGI M1
 ## 📅 Dernière mise à jour
 
 4 mars 2026
+
+## 🐛 Corrections & Améliorations
+
+### v1.1.0 - Correction du bug de modification
+- ✅ **Corrigé** : Le dialogue de modification n'affichait pas le bon todo
+- ✅ **Solution** : Ajout de clés uniques (`key = { item.id }`) dans la LazyColumn
+- ✅ **Amélioration** : Utilisation de `remember(item.id)` pour isoler l'état de chaque item
+- ✅ **Résultat** : Modification correcte et stable du bon todo
+

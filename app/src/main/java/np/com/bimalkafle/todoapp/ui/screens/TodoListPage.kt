@@ -78,7 +78,8 @@ fun TodoListPage(viewModel: TodoViewModel) {
         todoList?.let {
             LazyColumn(
                 content = {
-                    itemsIndexed(it) { index: Int, item: Todo ->
+                    items(it.size, key = { index -> it[index].id }) { index ->
+                        val item = it[index]
                         TodoItem(
                             item = item,
                             onDelete = {
@@ -105,8 +106,8 @@ fun TodoListPage(viewModel: TodoViewModel) {
 
 @Composable
 fun TodoItem(item: Todo, onDelete: () -> Unit, onEdit: (String) -> Unit) {
-    var showEditDialog by remember { mutableStateOf(false) }
-    var editText by remember { mutableStateOf(item.title) }
+    var showEditDialog by remember(item.id) { mutableStateOf(false) }
+    var editText by remember(item.id) { mutableStateOf(item.title) }
 
     if (showEditDialog) {
         AlertDialog(
