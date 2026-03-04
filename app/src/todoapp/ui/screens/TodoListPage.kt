@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -45,6 +45,9 @@ fun TodoListPage(viewModel: TodoViewModel) {
     var inputText by remember {
         mutableStateOf("")
     }
+    var editingTodoId by remember { mutableStateOf<Int?>(null) }
+    var editingText by remember(editingTodoId) { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
@@ -75,23 +78,65 @@ fun TodoListPage(viewModel: TodoViewModel) {
             }
         }
 
-        todoList?.let {
-            LazyColumn(
-                content = {
-                    items(it.size, key = { index -> it[index].id }) { index ->
-                        val item = it[index]
-                        TodoItem(
-                            item = item,
-                            onDelete = {
-                                viewModel.deleteTodo(item.id)
-                            },
-                            onEdit = { newTitle ->
-                                viewModel.updateTodo(item.id, newTitle)
+        // Dialog global de modification
+        if (editingTodoId != null) {
+            AlertDialog(
+                onDismissRequest = {
+                    editingTodoId = null
+                    editingText = ""
+                },
+                title = { Text("Modifier la tâche") },
+                text = {
+                    OutlinedTextField(
+                        value = editingText,
+                        onValueChange = { editingText = it },
+                        label = { Text("Titre de la tâche") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            if (editingText.isNotBlank() && editingTodoId != null) {
+                                viewModel.updateTodo(editingTodoId!!, editingText)
+                                // Le dialog reste ouvert après la sauvegarde
+                                // Pour permettre d'autres modifications
                             }
-                        )
+                        }
+                    ) {
+                        Text("Sauvegarder")
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            editingTodoId = null
+                            editingText = ""
+                        }
+                    ) {
+                        Text("Annuler")
                     }
                 }
             )
+        }
+
+        todoList?.let {
+            LazyColumn {
+                items(it, key = { todo -> todo.id }) { item ->
+                    TodoItem(
+                        item = item,
+                        onDelete = {
+                            viewModel.deleteTodo(item.id)
+                        },
+                        onEdit = {
+                            editingTodoId = item.id
+                            editingText = item.title
+                        }
+                    )
+                }
+            }
         } ?: Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
@@ -105,45 +150,7 @@ fun TodoListPage(viewModel: TodoViewModel) {
 }
 
 @Composable
-fun TodoItem(item: Todo, onDelete: () -> Unit, onEdit: (String) -> Unit) {
-    var showEditDialog by remember(item.id) { mutableStateOf(false) }
-    var editText by remember(item.id) { mutableStateOf(item.title) }
-
-    if (showEditDialog) {
-        AlertDialog(
-            onDismissRequest = { showEditDialog = false },
-            title = { Text("Modifier la tâche") },
-            text = {
-                OutlinedTextField(
-                    value = editText,
-                    onValueChange = { editText = it },
-                    label = { Text("Titre de la tâche") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        if (editText.isNotBlank()) {
-                            onEdit(editText)
-                            showEditDialog = false
-                        }
-                    }
-                ) {
-                    Text("Sauvegarder")
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = { showEditDialog = false }
-                ) {
-                    Text("Annuler")
-                }
-            }
-        )
-    }
+fun TodoItem(item: Todo, onDelete: () -> Unit, onEdit: () -> Unit) {
 
     Row(
         modifier = Modifier
@@ -169,7 +176,7 @@ fun TodoItem(item: Todo, onDelete: () -> Unit, onEdit: (String) -> Unit) {
                 color = Color.White
             )
         }
-        IconButton(onClick = { showEditDialog = true }) {
+        IconButton(onClick = onEdit) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_edit_24),
                 contentDescription = "Edit",

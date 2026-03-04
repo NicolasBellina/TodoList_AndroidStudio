@@ -131,9 +131,9 @@ viewModel.deleteTodo(1)
 
 ```kotlin
 data class Todo(
-    var id: Int,              // ID unique (généré automatiquement)
-    var title: String,        // Titre de la tâche
-    var createdAt: Date       // Date de création
+    var id: Int,        
+    var title: String,       
+    var createdAt: Date       
 )
 ```
 
@@ -145,7 +145,7 @@ data class Todo(
 3. La tâche est ajoutée en haut de la liste avec un timestamp automatique
 4. Le champ texte se vide automatiquement
 
-### Modifier une tâche ✅ (Corrigé)
+### Modifier une tâche 
 1. Cliquer sur l'icône **✏️ (crayon)** sur le côté droit de la tâche
 2. Une boîte de dialogue s'affiche avec le titre actuel
 3. Modifier le texte dans le champ
@@ -157,20 +157,3 @@ data class Todo(
 1. Cliquer sur l'icône **🗑️ (corbeille)** sur le côté droit de la tâche
 2. La tâche est supprimée immédiatement de la liste
 3. Pas de confirmation requise
-
-## 👤 Auteur
-
-Nicolas Bellina - ESGI M1
-
-## 📅 Dernière mise à jour
-
-4 mars 2026
-
-## 🐛 Corrections & Améliorations
-
-### v1.1.0 - Correction du bug de modification
-- ✅ **Corrigé** : Le dialogue de modification n'affichait pas le bon todo
-- ✅ **Solution** : Ajout de clés uniques (`key = { item.id }`) dans la LazyColumn
-- ✅ **Amélioration** : Utilisation de `remember(item.id)` pour isoler l'état de chaque item
-- ✅ **Résultat** : Modification correcte et stable du bon todo
-
