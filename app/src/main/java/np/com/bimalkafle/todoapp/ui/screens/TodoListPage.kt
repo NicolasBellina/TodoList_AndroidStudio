@@ -46,7 +46,7 @@ fun TodoListPage(viewModel: TodoViewModel) {
         mutableStateOf("")
     }
     var editingTodoId by remember { mutableStateOf<Int?>(null) }
-    var editingText by remember(editingTodoId) { mutableStateOf("") }
+    var editingText by remember { mutableStateOf("") }
 
 
     Column(
@@ -101,8 +101,8 @@ fun TodoListPage(viewModel: TodoViewModel) {
                         onClick = {
                             if (editingText.isNotBlank() && editingTodoId != null) {
                                 viewModel.updateTodo(editingTodoId!!, editingText)
-                                // Le dialog reste ouvert après la sauvegarde
-                                // Pour permettre d'autres modifications
+                                editingTodoId = null
+                                editingText = ""
                             }
                         }
                     ) {

@@ -1,159 +1,75 @@
-# TodoApp - Jetpack Compose
+# TodoApp - Android (Jetpack Compose)
 
-Une application Android moderne de gestion de tâches développée avec **Jetpack Compose** et **Kotlin**.
+Bienvenue sur le projet **TodoApp**. Il s'agit d'une application Android moderne de gestion de tâches (To-Do List) développée en **Kotlin** avec le framework **Jetpack Compose**.
 
 ## 📋 Fonctionnalités
 
-- ✅ **Afficher** la liste complète des tâches
-- ✅ **Ajouter** de nouvelles tâches avec timestamp
-- ✏️ **Modifier** le titre d'une tâche existante
-- ❌ **Supprimer** une tâche par ID
-- 📅 **Timestamps** automatiques pour chaque tâche
+*   **Ajouter une tâche** : Saisissez un texte et ajoutez-le à votre liste.
+*   **Modifier une tâche** : Cliquez sur l'icône "crayon" pour modifier une tâche existante. Le texte actuel est pré-rempli pour faciliter l'édition.
+*   **Supprimer une tâche** : Cliquez sur l'icône "poubelle" pour retirer une tâche de la liste.
+*   **Affichage** : Liste défilante avec date et heure de création pour chaque tâche, présentée de manière claire et organisée.
 
-## 🏗️ Architecture - Structure du Projet
+---
 
-L'application suit une architecture **MVVM** (Model-View-ViewModel) bien organisée :
+## 🚀 Comment lancer le projet
 
-```
-app/src/main/java/np/com/bimalkafle/todoapp/
-├── MainActivity.kt                          # Point d'entrée de l'application
-├── data/
-│   ├── model/
-│   │   └── Todo.kt                          # Modèle de données (data class)
-│   └── manager/
-│       └── TodoManager.kt                   # Gestion CRUD (singleton)
-└── ui/
-    ├── screens/
-    │   └── TodoListPage.kt                  # Interface utilisateur Compose
-    ├── viewmodel/
-    │   └── TodoViewModel.kt                 # Logique métier & gestion d'état
-    └── theme/
-        ├── Color.kt, Theme.kt, Type.kt      # Thème Material Design 3
-```
+Vous avez plusieurs options pour lancer l'application.
 
-## 🛠️ Technologies utilisées
+### Option 1 : Via le script facilité (Recommandé)
 
-- **Kotlin** - Langage de programmation principal
-- **Jetpack Compose** - Framework UI déclaratif
-- **AndroidX Lifecycle** - ViewModel et LiveData pour la gestion d'état
-- **Material Design 3** - Design System
-- **Gradle** - Gestion des dépendances et build
+Un script `run-app.sh` est inclus à la racine pour automatiser la compilation et l'installation.
 
-## 🚀 Lancer l'application
+1.  Ouvrez un terminal à la racine du projet.
+2.  Assurez-vous d'avoir un émulateur Android lancé ou un appareil physique connecté.
+3.  Exécutez la commande suivante :
+    ```bash
+    ./run-app.sh
+    ```
+    *Ce script se charge de compiler l'application, de l'installer sur l'appareil connecté et de la lancer automatiquement.*
 
-### ⚠️ Étape 1 : Lancer un émulateur Android (OBLIGATOIRE)
+### Option 2 : Via Android Studio
 
-Avant de lancer l'app, tu **DOIS** d'abord lancer un émulateur. Voici comment :
+1.  Ouvrez **Android Studio**.
+2.  Sélectionnez **Open** et choisissez le dossier `TodoList_AndroidStudio`.
+3.  Attendez que l'indexation et la synchronisation Gradle soient terminées.
+4.  Sélectionnez un émulateur ou un appareil dans la barre d'outils.
+5.  Cliquez sur le bouton **Run** (le triangle vert ▶️).
 
-#### Depuis Android Studio
-1. Ouvrir **Android Studio**
-2. Cliquer sur **Device Manager** (icône téléphone en bas à droite)
-3. Dans la liste des appareils, cliquer sur le bouton ▶️ **Play** pour lancer un émulateur
-4. **Attendre que l'émulateur démarre complètement** (cela peut prendre 30-60 secondes)
+### Option 3 : Via la ligne de commande (Gradle)
 
-#### Vérifier que l'émulateur est connecté
-```bash
-adb devices
-```
-Tu devrais voir quelque chose comme :
-```
-List of attached devices
-emulator-5554          device
-```
+Si vous préférez utiliser Gradle directement :
 
-### ⚠️ Étape 2 : Installer et lancer l'app
+1.  **Compiler le projet :**
+    ```bash
+    ./gradlew assembleDebug
+    ```
+2.  **Installer sur l'appareil :**
+    ```bash
+    ./gradlew installDebug
+    ```
+3.  **Lancer l'application (via ADB) :**
+    ```bash
+    adb shell am start -n np.com.bimalkafle.todoapp/.MainActivity
+    ```
 
-Une fois l'émulateur lancé et connecté, tu peux installer l'app.
+---
 
-#### Via Android Studio (Recommandé ✅)
-1. Cliquer sur **Build** → **Make Project** (ou ⌘B)
-2. Cliquer sur **Run** (ou ⌃R) 
-3. L'app se lance automatiquement sur l'émulateur
+## 🏗️ Architecture du Code
 
-#### Via le terminal avec Gradle
-```bash
-cd "/Users/nicolasbellina/Documents/ESGI M1/android studio/JetpackCompose_Playground/TodoApp"
-./gradlew installDebug
-```
+Le projet suit l'architecture **MVVM (Model-View-ViewModel)** pour une séparation claire des responsabilités.
 
-### 🔍 Consulter les logs
-```bash
-adb logcat | grep TodoApp
-```
+Les fichiers sources se trouvent désormais dans le répertoire standard :
+`app/src/main/java/np/com/bimalkafle/todoapp/`
 
-### 🆘 Troubleshooting
-**Erreur : "No connected devices!"**
-- ✅ Assurez-vous qu'un émulateur est lancé et visible dans `adb devices`
-- ✅ Si aucun émulateur n'apparaît, relancez-le depuis Android Studio → Device Manager
+*   **`model/Todo.kt`** : La classe de données représentant une tâche.
+*   **`viewmodel/TodoViewModel.kt`** : Gère la logique métier et l'état de la liste des tâches.
+*   **`ui/screens/TodoListPage.kt`** : L'écran principal contenant la liste et les formulaires (Interface Utilisateur).
+*   **`MainActivity.kt`** : Le point d'entrée de l'application.
 
-## 📦 Prérequis
+---
 
-- Android SDK 34+ configuré
-- Android Emulator ou appareil physique connecté
-- Java 11+
-- Gradle 8.0+
+## 🛠️ Prérequis techniques
 
-## 💻 Utilisation programmatique
-
-### TodoManager - CRUD operations
-
-```kotlin
-// Récupérer toutes les tâches
-val todos: List<Todo> = TodoManager.getAllTodo()
-
-// Ajouter une tâche
-TodoManager.addTodo("Ma première tâche")
-
-// Mettre à jour une tâche
-TodoManager.updateTodo(id = 1, newTitle = "Tâche modifiée")
-
-// Supprimer une tâche
-TodoManager.deleteTodo(id = 1)
-```
-
-### TodoViewModel - Avec LiveData
-
-```kotlin
-val viewModel: TodoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
-
-// Observer les changements
-viewModel.todoList.observe(this) { todos ->
-    // Mettre à jour l'UI
-}
-
-// Actions utilisateur
-viewModel.addTodo("Nouvelle tâche")
-viewModel.updateTodo(1, "Titre modifié")
-viewModel.deleteTodo(1)
-```
-
-## 📝 Modèle de données
-
-```kotlin
-data class Todo(
-    var id: Int,        
-    var title: String,       
-    var createdAt: Date       
-)
-```
-
-## ✨ Fonctionnalités détaillées
-
-### Ajouter une tâche
-1. Saisir le titre dans le champ texte en haut
-2. Cliquer sur le bouton **"Add"**
-3. La tâche est ajoutée en haut de la liste avec un timestamp automatique
-4. Le champ texte se vide automatiquement
-
-### Modifier une tâche 
-1. Cliquer sur l'icône **✏️ (crayon)** sur le côté droit de la tâche
-2. Une boîte de dialogue s'affiche avec le titre actuel
-3. Modifier le texte dans le champ
-4. Cliquer **"Sauvegarder"** pour confirmer
-   - **Important** : C'est maintenant le bon todo qui sera modifié (bug corrigé)
-5. Cliquer **"Annuler"** pour ignorer les modifications
-
-### Supprimer une tâche
-1. Cliquer sur l'icône **🗑️ (corbeille)** sur le côté droit de la tâche
-2. La tâche est supprimée immédiatement de la liste
-3. Pas de confirmation requise
+*   **Android Studio** (Hedgehog ou plus récent recommandé)
+*   **JDK 17** (utilisé par Gradle)
+*   **Android SDK** (API 34 configurée dans le projet)
